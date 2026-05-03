@@ -9,7 +9,6 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
-  # Remove when Node 24 is used by default after 2026-06-02
 
 jobs:
   build:
