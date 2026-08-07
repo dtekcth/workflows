@@ -4,13 +4,9 @@ on:
   workflow_call:
     inputs:
       update_type:
-        description: "Set to patch/minor/major to let this workflow bump the version. Set to `none` to use version from new_version"
+        description: "Set to patch/minor/major"
         required: true
         default: "patch"
-        type: string
-      new_version:
-        description: "Used when update_type is none. Example: 1.0.0"
-        required: false
         type: string
 
 jobs:
@@ -23,35 +19,20 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v5
 
-      - name: Calculate new version
-        id: calculate_new_version
-        if: "inputs.update_type != 'none'"
+      - name: Get new version
+        id: new_version
         run: |
           apt-get update
           apt-get install python3-semver
           ver="$(git describe --tags --abbrev=0 | sed 's/^v//')"
           echo value="$(python -c "import semver;print(semver.Version.parse('$ver').bump_${{ inputs.update_type }}())")" >>"$GITHUB_OUTPUT"
 
-      - name: Set NEW_VERSION
-        run: |
-          echo "NEW_VERSION=${{ steps.calculate_new_version.outputs.value || inputs.new_version }}" >> "$GITHUB_ENV"
-
-      - name: Configure git user
+      - name: Create release
         run: |
           git config user.name webredax
           git config user.email 309066399+webredax@users.noreply.github.com
-
-      - name: Add changed files
-        run: git add .
-
-      - name: Create release commit
-        run: 'git commit --allow-empty -m "Bump version to $NEW_VERSION"'
-
-      - name: Tag release commit
-        run: 'git tag "v$NEW_VERSION"'
-
-      - name: Push release commit
-        run: git push origin main
-
-      - name: Push release tag
-        run: 'git push origin "v$NEW_VERSION"'
+          git add .
+          git commit --allow-empty -m "Bump version to ${{ steps.new_version.outputs.value }}"
+          git tag "v${{ steps.new_version.outputs.value }}"
+          git push origin main
+          git push origin "v${{ steps.new_version.outputs.value }}"
