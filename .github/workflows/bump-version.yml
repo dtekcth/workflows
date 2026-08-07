@@ -1,0 +1,58 @@
+name: Bump version
+
+on:
+  workflow_call:
+    inputs:
+      update_type:
+        description: "Set to let this workflow bump the version. Set to none to use version from new_version"
+        required: true
+        default: "patch"
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+          - none
+      new_version:
+        description: "Used when update_type is none. Example: 1.0.0"
+        required: false
+        type: string
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Calculate new version
+        id: calculate_new_version
+        if: "inputs.update_type != 'none'"
+        run: |
+          apt-get update
+          apt-get install python3-semver
+          ver="$(git describe --tags --abbrev=0 | sed 's/^v//')"
+          python -c "import semver;print(semver.Version.parse('$ver').bump_${{ inputs.update_type }}())" >>"$GITHUB_OUTPUT"
+
+      - name: Set NEW_VERSION
+        run: |
+          echo "NEW_VERSION=${{ steps.calculate_new_version.outputs.value || steps.inputs.new_version }}" >> "$GITHUB_ENV"
+
+      - name: Add changed files
+        run: git add .
+
+      - name: Create release commit
+        run: 'git commit --allow-empty -m "Bump version to $NEW_VERSION"'
+
+      - name: Tag release commit
+        run: 'git tag "v$NEW_VERSION"'
+
+      - name: Push release commit
+        run: git push origin main
+
+      - name: Push release tag
+        run: 'git push origin "v$NEW_VERSION"'
