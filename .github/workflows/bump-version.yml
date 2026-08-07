@@ -4,15 +4,10 @@ on:
   workflow_call:
     inputs:
       update_type:
-        description: "Set to let this workflow bump the version. Set to none to use version from new_version"
+        description: "Set to patch/minor/major to let this workflow bump the version. Set to `none` to use version from new_version"
         required: true
         default: "patch"
-        type: choice
-        options:
-          - patch
-          - minor
-          - major
-          - none
+        type: string
       new_version:
         description: "Used when update_type is none. Example: 1.0.0"
         required: false
