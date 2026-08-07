@@ -34,7 +34,7 @@ jobs:
 
       - name: Set NEW_VERSION
         run: |
-          echo "NEW_VERSION=${{ steps.calculate_new_version.outputs.value || steps.inputs.new_version }}" >> "$GITHUB_ENV"
+          echo "NEW_VERSION=${{ steps.calculate_new_version.outputs.value || inputs.new_version }}" >> "$GITHUB_ENV"
 
       - name: Create release commit
         run: |
