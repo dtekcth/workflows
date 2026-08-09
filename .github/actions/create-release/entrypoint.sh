@@ -2,6 +2,7 @@
 
 set -e
 cd /github/workspace
+git config --global --add safe.directory /github/workspace
 git -C /github/workspace rev-parse --show-toplevel
 ls -A
 git config user.name webredax
