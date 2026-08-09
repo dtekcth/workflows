@@ -1,0 +1,10 @@
+# action.yml
+name: "Create release"
+description: "Greet someone and record the time"
+inputs:
+  new_version:
+    required: true
+runs:
+  using: "docker"
+  image: "docker://alpine/git:3.24"
+  entrypoint: entrypoint.sh
