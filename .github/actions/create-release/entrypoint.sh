@@ -2,7 +2,7 @@
 
 set -e
 cd /github/workspace
-ls
+ls -A
 git config user.name webredax
 git config user.email 309066399+webredax@users.noreply.github.com
 git add .
