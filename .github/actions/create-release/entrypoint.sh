@@ -2,6 +2,7 @@
 
 set -e
 cd /github/workspace
+git -C /github/workspace rev-parse --show-toplevel
 ls -A
 git config user.name webredax
 git config user.email 309066399+webredax@users.noreply.github.com
