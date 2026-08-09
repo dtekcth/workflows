@@ -1,9 +1,8 @@
 #!/usr/bin/env sh
 
 set -e
-
-echo "$INPUT_NEW_VERSION"
-
+cd /github/workspace
+ls
 git config user.name webredax
 git config user.email 309066399+webredax@users.noreply.github.com
 git add .
