@@ -50,7 +50,7 @@ env
 curl -L \
   -X POST \
   -H "Accept: application/vnd.github+json" \
-  -H "Authorization: Bearer $GITHUB_TOKEN" \
+  -H "Authorization: Bearer $GH_TOKEN" \
   -H "X-GitHub-Api-Version: 2026-03-10" \
   https://api.github.com/repos/$GITHUB_ACTION_REPOSITORY/releases \
   -d '{"tag_name":"'"$INPUT_NEW_VERSION"'"}'
