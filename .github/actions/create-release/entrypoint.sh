@@ -52,4 +52,4 @@ curl -L \
   -H "Authorization: Bearer $GH_TOKEN" \
   -H "X-GitHub-Api-Version: 2026-03-10" \
   https://api.github.com/repos/$GITHUB_ACTION_REPOSITORY/releases \
-  -d '{"tag_name":"'"$INPUT_NEW_VERSION"'"}'
+  -d '{"tag_name":"'"$INPUT_NEW_VERSION"'"}' || exit 1
