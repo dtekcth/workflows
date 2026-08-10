@@ -1,6 +1,6 @@
 # action.yml
 name: "Create release"
-description: "Greet someone and record the time"
+description: "Creates, tags and pushes a release commit as webredax. Includes uncommitted changes if there are any."
 inputs:
   new_version:
     required: true
