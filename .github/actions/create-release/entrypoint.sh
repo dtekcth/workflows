@@ -27,6 +27,9 @@ if [[ ! -z "$bump_function" ]]; then
     INPUT_NEW_VERSION="$(python -c "import semver;print(semver.Version.parse('$ver').$bump_function())")"
 fi
 
+# Save version for output
+echo "new_version=$INPUT_NEW_VERSION" >>"$GITHUB_OUTPUT"
+
 # Commit as webredax
 git config user.name webredax
 git config user.email 309066399+webredax@users.noreply.github.com

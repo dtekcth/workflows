@@ -4,6 +4,9 @@ inputs:
   new_version:
     required: true
     description: "v*.*.* or patch/minor/major"
+outputs:
+  new_version:
+    description: "Same as input or calculated based on update type"
 runs:
   using: "docker"
   image: "Dockerfile"
