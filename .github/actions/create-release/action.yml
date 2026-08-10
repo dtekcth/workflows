@@ -1,4 +1,3 @@
-# action.yml
 name: "Create release"
 description: "Creates, tags and pushes a release commit as webredax. Includes uncommitted changes if there are any."
 inputs:
