@@ -24,6 +24,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v5
         with:
+          # Let input tag override commit that triggered workflow.
+          # This allows release commit to be made mid-pipeline.
           ref: ${{ inputs.tag || github.sha }}
 
       - name: Set up Docker Buildx
@@ -41,12 +43,15 @@ jobs:
         uses: docker/metadata-action@v6
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          # Use metadata from checked out ref instead of metadata from
+          # commit that triggered workflow
           context: git
 
       - name: Build and push Docker image
         id: build-and-push
         uses: docker/build-push-action@v7
         with:
+          # Build from checked out files rather than cloning again based on metadata
           context: .
           push: true
           tags: ${{ steps.meta.outputs.tags }}
