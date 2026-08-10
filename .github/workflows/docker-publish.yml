@@ -41,6 +41,7 @@ jobs:
         uses: docker/metadata-action@v6
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          context: git
 
       - name: Build and push Docker image
         id: build-and-push

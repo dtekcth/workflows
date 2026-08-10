@@ -3,8 +3,8 @@
 set -e
 cd /github/workspace
 
-apt update
-apt install -y git python3-semver
+apt-get update
+apt-get install -y git python3-semver
 
 # Mounting messes up permissions
 git config --global --add safe.directory /github/workspace
