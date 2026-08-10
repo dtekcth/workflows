@@ -3,11 +3,11 @@
 set -e
 cd /github/workspace
 
-# Mounting messes up permissions
-git config --global --add safe.directory /github/workspace
-
 apt update
 apt install -y git python3-semver
+
+# Mounting messes up permissions
+git config --global --add safe.directory /github/workspace
 
 case "$INPUT_NEW_VERSION" in
     patch)
