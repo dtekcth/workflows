@@ -46,7 +46,6 @@ git push origin main
 git push origin "v$INPUT_NEW_VERSION"
 
 # Create GitHub release
-env
 curl -L \
   -X POST \
   -H "Accept: application/vnd.github+json" \
