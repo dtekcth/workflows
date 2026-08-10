@@ -24,7 +24,7 @@ esac
 # Bump version based on previous git tag
 if [[ ! -z "$bump_function" ]]; then
     ver="$(git describe --tags --abbrev=0 | sed 's/^v//')"
-    INPUT_NEW_VERSION="$(python -c "import semver;print(semver.Version.parse('$ver').$bump_function())")"
+    INPUT_NEW_VERSION="$(python3 -c "import semver;print(semver.Version.parse('$ver').$bump_function())")"
 fi
 
 # Save version for output
