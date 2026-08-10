@@ -1,4 +1,4 @@
-name: Create release
+name: Create release (internal)
 
 on:
   workflow_dispatch:
