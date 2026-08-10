@@ -1,3 +1,3 @@
-FROM alpine/git:v2.54.0
+FROM ubuntu:26.04
 COPY entrypoint.sh /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
