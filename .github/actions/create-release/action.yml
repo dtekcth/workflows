@@ -3,6 +3,7 @@ description: "Creates, tags and pushes a release commit as webredax. Includes un
 inputs:
   new_version:
     required: true
+    description: "v*.*.* or patch/minor/major"
 runs:
   using: "docker"
   image: "Dockerfile"

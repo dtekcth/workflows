@@ -6,6 +6,27 @@ cd /github/workspace
 # Mounting messes up permissions
 git config --global --add safe.directory /github/workspace
 
+apt update
+apt install -y git python3-semver
+
+case "$INPUT_NEW_VERSION" in
+    patch)
+        bump_function="bump_patch"
+        ;;
+    minor)
+        bump_function="bump_minor"
+        ;;
+    major)
+        bump_function="bump_major"
+        ;;
+esac
+
+# Bump version based on previous git tag
+if [[ ! -z "$bump_function" ]]; then
+    ver="$(git describe --tags --abbrev=0 | sed 's/^v//')"
+    INPUT_NEW_VERSION="$(python -c "import semver;print(semver.Version.parse('$ver').$bump_function())")"
+fi
+
 # Commit as webredax
 git config user.name webredax
 git config user.email 309066399+webredax@users.noreply.github.com
