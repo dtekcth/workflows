@@ -4,7 +4,7 @@ set -e
 cd /github/workspace
 
 apt-get update
-apt-get install -y git python3-semver
+apt-get install -y git python3-semver curl
 
 # Mounting messes up permissions
 git config --global --add safe.directory /github/workspace
@@ -44,3 +44,13 @@ git commit --allow-empty -m "Bump version to $INPUT_NEW_VERSION"
 git tag "v$INPUT_NEW_VERSION"
 git push origin main
 git push origin "v$INPUT_NEW_VERSION"
+
+# Create GitHub release
+env
+curl -L \
+  -X POST \
+  -H "Accept: application/vnd.github+json" \
+  -H "Authorization: Bearer $GITHUB_TOKEN" \
+  -H "X-GitHub-Api-Version: 2026-03-10" \
+  https://api.github.com/repos/$GITHUB_ACTION_REPOSITORY/releases \
+  -d '{"tag_name":"'"$INPUT_NEW_VERSION"'"}'
