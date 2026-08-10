@@ -1,0 +1,48 @@
+name: Create release and deploy
+
+on:
+  # For use in this repo
+  workflow_dispatch:
+    inputs:
+      update_type:
+        required: true
+        default: "patch"
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+
+  # For use in other repos
+  workflow_call:
+    inputs:
+      update_type:
+        required: true
+        type: string
+        description: "Set to patch/minor/major"
+
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+    outputs:
+        new_version: ${{ steps.create_release.outputs.new_version }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 500
+          fetch-tags: true
+
+      - name: Create release
+        id: create_release
+        uses: dtekcth/workflows/.github/actions/create-release@main
+        with:
+          new_version: ${{ inputs.update_type }}
+
+  docker-publish:
+    uses: dtekcth/workflows/.github/workflows/docker-publish.yml@main
+    needs: create-release
+    permissions:
+      contents: read
+      packages: write
+    with:
+      tag: ghcr.io/${{ github.repository }}:v${{ needs.create-release.outputs.new_version }}
